@@ -1,4 +1,11 @@
 {
   "name": "pressplus",
-  "displayName": "pressplus"
+  "displayName": "pressplus",
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "c0229f1b-3710-4ffc-a372-73a049102754"
+      }
+    }
+  }
 }

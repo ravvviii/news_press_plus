@@ -2,10 +2,14 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+
 // Import the default image
+import { useNavigation } from '@react-navigation/native';
 import defaultImage from '../Images/audit-failed-3.png';
 
+
 export default function News() {
+  const navigation = useNavigation();
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
@@ -30,10 +34,30 @@ export default function News() {
     Linking.openURL(websiteLink)
 }
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const month = date.toLocaleString('default', { month: 'long' });
+  const day = date.getDate();
+  const hours = date.getHours() % 12 || 12; // Convert to 12-hour format
+  const minutes = date.getMinutes();
+  const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+
+  return `${month} ${day}, ${hours}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+};
+
   return (
     <ScrollView style={styles.scrollPage}>
-      {articles.map(({ article, urlToImage, source, title, description, publishedAt,url }, index) => (
-        <TouchableOpacity key={index} onPress={()=>openWebsite(url)}>
+      {articles.map(({ article, urlToImage, source, title, description, publishedAt,url, content }, index) => (
+       
+          description !=null &&   <TouchableOpacity key={index} onPress={()=>navigation.navigate("Details", {
+          urlToImage, 
+          source: source.name , 
+          title, 
+          description, 
+          publishedAt,
+          url, 
+          content
+        })}>
           <View style={styles.card}>
             <View style={styles.cardContent}>
               <Image
@@ -43,13 +67,14 @@ export default function News() {
                 onError={(error) => console.log("Error loading image:", error)}
               />
               <View style={styles.textContainer}>
-                <Text style={styles.time}>{new Date(publishedAt).toLocaleDateString('en-US')}</Text>
+              <Text style={styles.time}>{formatDate(publishedAt)}</Text>
                 <Text style={styles.sourceName}>{source.name}</Text>
                 <Text style={styles.title}>{title}</Text>
               </View>
             </View>
           </View>
         </TouchableOpacity>
+    
       ))}
     </ScrollView>
   );
@@ -65,6 +90,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 8,
     elevation: 4,
+   
     
   },
   cardContent: {
@@ -93,10 +119,10 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 12,
     color: '#E71C23',
-    marginTop: 5,
+    marginTop: 0,
     fontWeight: '800',
     position:'absolute',
-    right:3,
+    right:0,
     top:0
   },
 });

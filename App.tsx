@@ -2,30 +2,65 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet
 } from 'react-native';
-import Header from './Components/Header';
+
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Details from './Components/Details';
 import News from './Components/News';
 
 
+
+const Stack = createNativeStackNavigator();
 
 
 
 function App(): React.JSX.Element {
 
   return ( 
-    <SafeAreaView style={styles.container}>
-      <Header/>
-      <News/>
-    </SafeAreaView>
+
+
+    <GestureHandlerRootView>
+    <NavigationContainer>
+        <Stack.Navigator initialRouteName='Main'>
+
+          <Stack.Screen 
+          name='Main'
+          component={News}
+          options={{
+            title:"PressPlus",
+            headerStyle: {
+              backgroundColor: "#FF9F01",
+            },
+          }}
+          
+          
+          />
+          <Stack.Screen 
+          name='Details'
+          component={Details}
+          options={{
+            title:"News Details",
+            
+            headerStyle: {
+              backgroundColor: "#FF9F01",
+            },
+          }}
+          
+          
+          />
+
+        </Stack.Navigator>
+    </NavigationContainer>
+</GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1, // Apply a flex of 1 to the entire SafeArea View
-  },
+  
  
 });
 
